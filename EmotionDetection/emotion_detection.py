@@ -38,7 +38,7 @@ def emotion_detector(text_to_analyze):
         result = emotions.copy()
         result['dominant_emotion'] = dominant_emotion
     
-    elif response.status_code == 500:
+    elif response.status_code == 400:
         result = {"none": "none" }
         
     # Return the dictionary
