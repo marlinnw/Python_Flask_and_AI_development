@@ -33,10 +33,14 @@ def RunSentimentAnalysis():
     result = emotion_detector(text_to_analyze)
     
     # Retrieve the dominant result
-    dominant = result['dominant_emotion']
+    dominant = max(result, key=result.get)
 
-    return "for the given statement, the system response is {}. The dominant emotion is {}" .format(result, dominant)
+    result_parts = [f"'{k}': {v * 100:.2f}%" for k, v in result.items()]
+    result_sentence = ', '.join(result_parts[:-1]) + " and " + result_parts[-1]
+
+    result_str = f"For the given statement, the system response is {result_sentence}. The dominant emotion is {dominant}."
+    return result_str
 
 # Start the flask server
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5002)
