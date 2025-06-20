@@ -32,17 +32,22 @@ def RunSentimentAnalysis():
     # Retrieve the reusult from AI in the form of a dictionary
     result = emotion_detector(text_to_analyze)
 
-    # Extract the dominant emotion from the dictionary
-    dominant_emotion = result['dominant_emotion']
+    # Return error message for blank text
+    if result == {"none": "none"}:
+        return "Invalid text! Please try again!"
     
-    # Format dictionary and build the sentance
-    emotion_parts = [f"'{k}': {v}" for k, v in result.items()]
-    emotion_sentence = ', '.join(emotion_parts[:-2]) + " and " + emotion_parts[-2]
-    result_str = f"For the given statement, the system response is {emotion_sentence}. The dominant emotion is {dominant_emotion}."
+    else:
+        # Extract the dominant emotion from the dictionary
+        dominant_emotion = result['dominant_emotion']
+    
+        # Format dictionary and build the sentance
+        emotion_parts = [f"'{k}': {v}" for k, v in result.items()]
+        emotion_sentence = ', '.join(emotion_parts[:-2]) + " and " + emotion_parts[-2]
+        result = f"For the given statement, the system response is {emotion_sentence}. The dominant emotion is {dominant_emotion}."
 
     # Return the sentance.
-    return result_str
+        return result
 # Start the flask server
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5001)
+    app.run(host="0.0.0.0", port=5004)
     
