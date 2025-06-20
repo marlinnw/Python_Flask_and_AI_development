@@ -1,4 +1,4 @@
-"""
+"""Add commentMore actions
 The purpose of this module is to create the flask
 server that will run the Emotion Detector web app
 """
@@ -29,18 +29,20 @@ def RunSentimentAnalysis():
      # Retrieve the text to analyze from the request arguments
     text_to_analyze = request.args.get('textToAnalyze')
 
-    # Retrieve the reusult from AI
+    # Retrieve the reusult from AI in the form of a dictionary
     result = emotion_detector(text_to_analyze)
+
+    # Extract the dominant emotion from the dictionary
+    dominant_emotion = result['dominant_emotion']
     
-    # Retrieve the dominant result
-    dominant = max(result, key=result.get)
+    # Format dictionary and build the sentance
+    emotion_parts = [f"'{k}': {v}" for k, v in result.items()]
+    emotion_sentence = ', '.join(emotion_parts[:-2]) + " and " + emotion_parts[-2]
+    result_str = f"For the given statement, the system response is {emotion_sentence}. The dominant emotion is {dominant_emotion}."
 
-    result_parts = [f"'{k}': {v * 100:.2f}%" for k, v in result.items()]
-    result_sentence = ', '.join(result_parts[:-1]) + " and " + result_parts[-1]
-
-    result_str = f"For the given statement, the system response is {result_sentence}. The dominant emotion is {dominant}."
+    # Return the sentance.
     return result_str
-
 # Start the flask server
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5002)
+    app.run(host="0.0.0.0", port=5001)
+    
