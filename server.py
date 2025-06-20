@@ -20,7 +20,7 @@ def render_index_page():
 
 # Create the endpoint for 'emotion_detector
 @app.route("/emotionDetector")
-def RunSentimentAnalysis():
+def run_sentiment_analysis():
     """
     The purpose of this function is to retrieve
     the analyzedemotional response of the 
@@ -35,18 +35,18 @@ def RunSentimentAnalysis():
     # Return error message for blank text
     if result == {"none": "none"}:
         return "Invalid text! Please try again!"
-    
-    else:
-        # Extract the dominant emotion from the dictionary
-        dominant_emotion = result['dominant_emotion']
-    
-        # Format dictionary and build the sentance
-        emotion_parts = [f"'{k}': {v}" for k, v in result.items()]
-        emotion_sentence = ', '.join(emotion_parts[:-2]) + " and " + emotion_parts[-2]
-        result = f"For the given statement, the system response is {emotion_sentence}. The dominant emotion is {dominant_emotion}."
+    # Extract the dominant emotion from the dictionary
+    dominant_emotion = result['dominant_emotion']
+    # Format dictionary and build the sentance
+    emotion_parts = [f"'{k}': {v}" for k, v in result.items()]
+    emotion_sentence = ', '.join(emotion_parts[:-2]) + " and " + emotion_parts[-2]
+    result = (
+        f"For the given statement, the system response is {emotion_sentence}. "
+        f"The dominant emotion is {dominant_emotion}."
+    )
 
     # Return the sentance.
-        return result
+    return result
 # Start the flask server
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5004)
